@@ -14,8 +14,18 @@ def inserir_colaborador(request):
     setor = request.POST.get('setor')
     cargo = request.POST.get('cargo')    
     telefone = request.POST.get('telefone')
-    colaborador = ColaboradorModel.objects.create(cpf=cpf, nome=nome, setor=setor, cargo=cargo, telefone=telefone)
-    return render(request, 'pages/inserir_colaborador.html', context={'colaborador': colaborador})
+
+    if not nome and cpf :
+            messages.error(request, 'O campo nome e cpf são obrigatórios.')
+            return redirect('inserir_colaborador')
+    try:
+            colaborador = ColaboradorModel.objects.create(cpf=cpf, nome=nome, setor=setor, cargo=cargo, telefone=telefone)
+            messages.success(request, 'Cadastro realizado com sucesso!')
+    except Exception as e:
+            messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
+    
+    return redirect('inserir_colaborador') 
+
 
 def listar_colaboradores(request):
     colaboradores = ColaboradorModel.objects.all()
@@ -49,9 +59,18 @@ def inserir_epi(request):
     n_serie = request.POST.get('n_serie')
     status = request.POST.get('status')
     estado = request.POST.get('estado')    
+
+    if not tipo and n_serie :
+            messages.error(request, 'O campo tipo e número série são obrigatórios.')
+            return redirect('inserir_epi')
+    try:
+            epi = EpiModel.objects.create(tipo=tipo, n_serie=n_serie, status=status, estado=estado)
+            messages.success(request, 'Cadastro realizado com sucesso!')
+    except Exception as e:
+            messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
     
-    epi = EpiModel.objects.create(tipo=tipo, n_serie=n_serie, status=status, estado=estado)
-    return render(request, 'pages/inserir_epi.html', context={'epi': epi})
+    return redirect('inserir_epi') 
+    
 
 def listar_epis(request):
     epis = EpiModel.objects.all()
@@ -79,18 +98,8 @@ def inserir_emprestimo(request):
         return render(request, 'pages/inserir_emprestimo.html')
     
     cpf = request.POST.get('cpf')
-    nome = request.POST.get('nome')
+    n_serie = request.POST.get('n_serie')
+
     
-    emprestimo = ColaboradorModel.objects.create(cpf=cpf, nome=nome, setor=setor, cargo=cargo, telefone=telefone)
-    return render(request, 'pages/inserir_colaborador.html', context={'colaborador': colaborador})
-
-    class EmprestimoModel(models.Model):
-    id_emprestimo = models.IntegerField(primary_key=True)
-    data_emprestimo = models.DateField(auto_now_add=True)
-    data_retorno = models.DateField()
-    observacao = models.TextField()
-    colaborador = models.ForeignKey(ColaboradorModel, on_delete=models.CASCADE)
-    epi = models.ForeignKey(EpiModel, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Emprestimo({self.id_emprestimo}, {self.colaborador}, {self.epi})"
+    emprestimo = ColaboradorModel.objects.create(cpf=cpf, n_serie=n_serie, )
+    return render(request, 'pages/inserir_emprestimo.html', context={'emprestimo': emprestimo})
