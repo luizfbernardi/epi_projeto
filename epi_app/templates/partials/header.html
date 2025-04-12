@@ -1,0 +1,17 @@
+<header>
+    <nav class="menu">
+        <ul>
+            <li><a href="{% url 'home' %}">Cardápio</a></li>
+            <li><a href="#">Promoções</a></li>
+            <li class="carrinho"><a href="{% url 'comprar_carrinho_pizza' %}">Carrinho</a> {% if request.session.quantidade_pizzas %}<span class="carrinho-quantidade">{{ request.session.quantidade_pizzas }}</span> {% endif %}</li>
+            <li><a href="#">Contato</a></li>
+        </ul>
+    </nav>
+
+    <div class="admin">
+        <a href="{% url 'pizza' %}">Criar Pizza</a>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'listar' %}">Listar Pizza</a>
+    </div>
+
+</header>
