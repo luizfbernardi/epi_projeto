@@ -3,5 +3,26 @@
 {% block title %} Base {% endblock title %}
 
 {% block content %}
-Olá mundo
+<body>
+    <div class="menu-lateral">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="inserir_colaborador/">Inserir Colaborador</a></li>
+            <li><a href="listar_colaboradores/">Colaboradores</a></li>
+            <li><a href="inserir_epi/">Inserir EPI</a></li> 
+            <li><a href="listar_epis/">Equipamentos</a></li>
+            <li><a href="controle_epi/">Controle de Epi</a></li>
+        </ul>
+    </div>
+
+    <div class="usuario">
+        <a href="#">
+            <img src="#" alt="Foto do usuário">
+        </a>
+        <a href="#">
+            <p>Nome do Usuário</p>
+        </a>
+    </div>
+</body>
+</html>
 {% endblock content %}

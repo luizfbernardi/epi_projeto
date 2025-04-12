@@ -1,0 +1,78 @@
+/* Estilização do menu lateral */
+.menu-lateral {
+    width: 300px;
+    background: #2C3E50;
+    color: #ECF0F1;
+    padding: 30px;
+    position: fixed;
+    height: 100%;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+}
+
+.menu-lateral h2 {
+    font-size: 26px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.menu-lateral ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu-lateral ul li {
+    margin: 20px 0;
+}
+
+.menu-lateral ul li a {
+    text-decoration: none;
+    color: #ECF0F1;
+    font-size: 20px;
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.menu-lateral ul li a:hover {
+    background: #34495E;
+    transform: scale(1.05);
+}
+
+/* Estilização do usuário - agora no canto direito */
+.usuario {
+    position: absolute;
+    top: 20px; /* Ajuste para ficar no topo */
+    right: 30px; /* Agora alinhado à direita */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Ajuste na imagem do usuário */
+.usuario img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid #2C3E50;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.usuario img:hover {
+    transform: scale(1.1);
+}
+
+/* Ajuste no nome do usuário */
+.usuario p {
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.usuario p:hover {
+    color: #2980B9;
+}

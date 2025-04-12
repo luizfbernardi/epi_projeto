@@ -1,0 +1,30 @@
+{% extends 'global/index.html'%}
+
+{% block title %} Colaborador {% endblock title %}
+
+{% block content %}
+<body>
+    <form action="{% url 'inserir_colaborador' %}" method="POST">
+        {% csrf_token %}
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" required><br><br>
+
+        <label for="setor">Setor:</label>
+        <input type="text" id="setor" name="setor" required><br><br>
+
+        <label for="cargo">Cargo:</label>
+        <input type="text" id="cargo" name="cargo" required><br><br>
+
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" name="telefone" required><br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+
+<a href="{% url 'base' %}">Voltar para home</a>
+
+{% endblock content%}

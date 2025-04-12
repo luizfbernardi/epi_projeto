@@ -1,0 +1,27 @@
+{% extends 'global/index.html'%}
+
+{% block title %} EPI {% endblock title %}
+
+{% block content %}
+<body>
+    <form action="{% url 'inserir_epi' %}" method="POST">
+        {% csrf_token %}
+        <label for="tipo">Tipo:</label>
+        <input type="text" id="tipo" name="tipo" required><br><br>
+
+        <label for="n_serie">Número de Série:</label>
+        <input type="text" id="n_serie" name="n_serie" required><br><br>
+
+        <label for="estado">Estado:</label>
+        <input type="text" id="estado" name="estado" required><br><br>
+
+        <label for="status">Status:</label>
+        <input type="text" id="status" name="status" required><br><br>
+
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+
+<a href="{% url 'base' %}">Voltar para home</a>
+
+{% endblock content%}

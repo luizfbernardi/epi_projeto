@@ -1,0 +1,20 @@
+{% extends 'global/index.html'%}
+
+{% block title %} EPI {% endblock title %}
+
+{% block content %}
+<main>
+    <h1>Atualizar Epi</h1>
+    <form action="{% url 'atualizar_epi' epi.id %}" method="post">
+        {% csrf_token %}
+        <input type="text" name="tipo" placeholder="Tipo Epi" value="{{ epi.tipo }}">
+        <input type="text" name="n_serie" placeholder="Número de Série" value="{{ epi.n_serie }}">
+        <input type="text" name="estado" placeholder="Estado de Uso" value="{{ epi.estado }}">
+        <input type="text" name="status" placeholder="Status" value="{{ epi.status }}">
+        <button type="submit">Atualizar</button>
+    </form>
+</main>
+
+<a href="{% url 'base' %}">Voltar para home</a>
+
+{% endblock content%}
