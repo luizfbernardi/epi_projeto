@@ -1,20 +1,179 @@
-{% extends 'global/index.html'%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colaboradores</title>
+    <style>
 
-{% block title %} Colaboradores {% endblock title %}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+            padding-top: 100px;
+            font-family: Arial, sans-serif;
+        }
 
-{% block content %}
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
+        }
+
+        .confirmar-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            margin-right: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+        .confirmar-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .cancelar-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            font-family: Arial, sans-serif;
+        }
+
+        .cancelar-btn:hover {
+            background-color: #27ae60;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            color: #2C3E50;
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px;
+        }
+
+        ul li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+        }
+
+        ul li a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #2ecc71;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .editar {
+            background-color: #ffee00a1;
+        }
+        .excluir {
+            background-color: #ff000086;
+        }
+        
+
+    </style>
+</head>
 <body>
     <h1>Colaboradores Cadastrados</h1>
     <ul>
         {% for colaborador in colaboradores %}
             <li>{{ colaborador.nome }} - {{ colaborador.cpf }} - {{ colaborador.numero_colaborador }} - {{ colaborador.setor }} - {{colaborador.cargo }} - {{colaborador.telefone }}
-                <a href="{% url 'atualizar_colaborador' colaborador.id %}">Editar</a> |
-                <a href="{% url 'excluir_colaborador' colaborador.id %}">Deletar</a>
+                <a class="editar" href="{% url 'atualizar_colaborador' colaborador.id %}">Editar</a> |
+                <a class="excluir" href="#" onclick="abrirModal(event, '{% url 'excluir_colaborador' colaborador.id %}')">Deletar</a>
             </li>
         {% empty %}
             <li>Nenhum colaborador cadastrado.</li>
         {% endfor %}
     </ul>
+
     <a href="{% url 'base' %}">Voltar para home</a>
+
+    <div id="modalConfirmacao" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal()">&times;</span>
+            <h3>Tem certeza de que deseja excluir este colaborador?</h3>
+            <p>Esta ação não pode ser desfeita.</p>
+            <button id="confirmar" class="confirmar-btn">Confirmar</button>
+            <button onclick="fecharModal()" class="cancelar-btn">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        let modal = document.getElementById("modalConfirmacao");
+        let confirmarBtn = document.getElementById("confirmar");
+        let urlExclusao = "";
+
+        function abrirModal(event, url) {
+            event.preventDefault();
+            modal.style.display = "block"; 
+            urlExclusao = url; 
+        }
+
+        function fecharModal() {
+            modal.style.display = "none";
+        }
+
+        confirmarBtn.onclick = function() {
+            window.location.href = urlExclusao;
+        }
+    </script>
+
 </body>
-{% endblock content%}
