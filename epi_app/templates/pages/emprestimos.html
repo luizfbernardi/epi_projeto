@@ -53,11 +53,11 @@
 
     a {
         text-decoration: none;
-        color: #2980B9;
+        color: #44b4fa;
         padding: 8px 12px;
         margin-top: 20px;
         display: inline-block;
-        border: 1px solid #2980B9;
+        border: 1px solid #000000;
         border-radius: 4px;
         transition: background-color 0.3s ease, color 0.3s ease;
         font-family: Arial, sans-serif;
@@ -81,13 +81,15 @@
   
   <table>
     <tr>
-      =<th>Número Empréstimo </th>
+      <th>Número Empréstimo </th>
       <th>Nome Colaborador </th>
       <th>Número Colaborador </th>
       <th>Tipo Epi </th>
       <th>Número Epi </th>
+      <th>Status </th>
       <th>Data empréstimo </th>
       <th>Data prevista </th>
+      <th>Data Devolução </th>
     </tr>
     {% for emprestimo in emprestimos %}
       <tr>
@@ -96,8 +98,11 @@
         <td>{{ emprestimo.colaborador.numero_colaborador }}</td>
         <td>{{ emprestimo.epi.tipo }}</td>
         <td>{{ emprestimo.epi.numero_epi }}</td>
+        <td>{{ emprestimo.status }}</td>
         <td>{{ emprestimo.data_emprestimo }}</td>
         <td>{{ emprestimo.data_prevista }}</td>
+        <td>{{ emrestimo.data_devolucao }}</td>
+        <td><a class="editar" href="{% url 'atualizar_emprestimo' emprestimo.id %}">Editar</a></td>
       </tr>
     {% empty %}
       <tr><td colspan="5">Nenhum produto encontrado.</td></tr>

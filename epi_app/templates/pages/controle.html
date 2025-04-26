@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle</title>
+    <style>
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #2C3E50;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2C3E50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        form {
+            margin: 50px auto;
+            padding: 30px;
+            background: #ECF0F1;
+            width: 50%;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #2C3E50;
+            color: white;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            background: #34495E;
+        }
+
+        table {
+            width: 90%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #2C3E50;
+            color: white;
+        }
+
+        .no-result {
+            text-align: center;
+            color: #E74C3C;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Controle</h1>
+</header>
+
+<form action="{% url 'controle' %}" method="GET">
+    {% csrf_token %}
+    <label for="numero_identificacao">Número de Identificação (Empréstimo, Colaborador ou EPI):</label>
+    <input type="text" id="numero_identificacao" name="numero_identificacao" placeholder="Digite o número de identificação" required>
+
+    <button type="submit">Pesquisar</button>
+</form>
+<a href="{% url 'base' %}" class="voltar-home">Voltar para home</a>
+{% if emprestimos %}
+    <table>
+        <thead>
+            <tr>
+                <th>Número de Empréstimo</th>
+                <th>Colaborador</th>
+                <th>EPI</th>
+                <th>Status</th>
+                <th>Data Prevista para Devolução</th>
+                <th>Observação</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emprestimo in emprestimos %}
+                <tr>
+                    <td>{{ emprestimo.numero_emprestimo }}</td>
+                    <td>{{ emprestimo.colaborador.nome }}</td>
+                    <td>{{ emprestimo.epi.tipo }}</td>
+                    <td>{{ emprestimo.status }}</td>
+                    <td>{{ emprestimo.data_prevista }}</td>
+                    <td>{{ emprestimo.observacao }}</td>
+                    <td>
+                        <a href="{% url 'atualizar_emprestimo' emprestimo.id %}">Editar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="no-result">Nenhum empréstimo encontrado com esse número de identificação.</p>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atualizar Emprestimo</title>
+    <style>
+
+    form {
+        margin-left: 350px;
+        margin-top: 50px;
+        width: 500px;
+        background: #ECF0F1;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        font-family: Arial, sans-serif;
+    }
+
+    select {
+        width: 500px;
+        margin-bottom: 20px;
+        background: #ECF0F1;
+        font-size: 16px;
+    }
+
+    form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    form button {
+        width: 100%;
+        padding: 12px;
+        background: #2C3E50;
+        color: #ECF0F1;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    form button:hover {
+        background: #34495E;
+    }
+
+    a {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #2C3E50;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    form {
+            margin-left: 350px;
+            margin-top: 50px;
+            width: 500px;
+            background: #ECF0F1;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        form button {
+            width: 100%;
+            padding: 12px;
+            background: #2C3E50;
+            color: #ECF0F1;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        form button:hover {
+            background: #34495E;
+        }
+
+    .hidden {
+        display: none;
+    }
+
+    </style>
+</head>
+<body>
+
+    <h1>Atualizar Empréstimo</h1>
+    <form action="{% url 'atualizar_emprestimo' emprestimo.id %}" method="POST">
+        {% csrf_token %}
+
+        <label for="numero_emprestimo">Número de Identificação Empréstimo:</label>
+        <input type="number" id="numero_emprestimo" name="numero_emprestimo" value="{{ emprestimo.numero_emprestimo }}" disabled class="readonly">
+
+        <label class="colaborador" for="numero_colaborador">Número de Identificação Colaborador:</label>
+        <input type="text" id="numero_colaborador" name="numero_colaborador" value="{{ emprestimo.colaborador.numero_colaborador }}" disabled class="readonly">
+        <p>{{ emprestimo.colaborador.nome }}</p>
+
+        <label class="epi" for="numero_epi">Número de Identificação Epi:</label>
+        <input type="text" id="numero_epi" name="numero_epi" value="{{ emprestimo.epi.numero_epi }}" disabled class="readonly">
+        <p>{{ emprestimo.epi.tipo }}</p>
+
+        <label>Data do Empréstimo (automática):</label>
+        <input type="text" value="{{ emprestimo.data_emprestimo }}" readonly class="readonly">
+
+        <label for="data_prevista">Data Prevista para Devolução:</label>
+        <input type="date" id="data_prevista" name="data_prevista" value="{{ emprestimo.data_prevista }}" required>
+
+        <label for="status">Status:</label>
+        <select name="status" id="status" onchange="verificaStatus()" required>
+            <option value="Emprestado" {% if emprestimo.status == 'Emprestado' %}selected{% endif %}>Emprestado</option>
+            <option value="Em uso" {% if emprestimo.status == 'Em uso' %}selected{% endif %}>Em uso</option>
+            <option value="Fornecido" {% if emprestimo.status == 'Fornecido' %}selected{% endif %}>Fornecido</option>
+            <option value="Devolvido" {% if emprestimo.status == 'Devolvido' %}selected{% endif %}>Devolvido</option>
+            <option value="Perdido" {% if emprestimo.status == 'Perdido' %}selected{% endif %}>Perdido</option>
+            <option value="Danificado" {% if emprestimo.status == 'Danificado' %}selected{% endif %}>Danificado</option>
+        </select>
+
+        <div id="extra_fields" class="hidden">
+            <label for="data_devolucao">Data de Devolução:</label>
+            <input type="date" id="data_devolucao" name="data_devolucao" value="{{ emprestimo.data_devolucao|default:'' }}">
+
+            <label for="observacao">Observação:</label>
+            <input type="text" id="observacao" name="observacao" value="{{ emprestimo.observacao|default:'' }}">
+        </div>
+
+        <button type="submit">Atualizar</button>
+    </form>
+
+    <script>
+        function verificaStatus() {
+            const status = document.getElementById('status').value;
+            const mostrar = ['Perdido', 'Devolvido', 'Danificado'];
+            const camposExtras = document.getElementById('extra_fields');
+            const inputData = document.getElementById('data_devolucao');
+            const inputObs = document.getElementById('observacao');
+
+            if (mostrar.includes(status)) {
+                camposExtras.classList.remove('hidden');
+                inputData.setAttribute('required', 'required');
+                inputObs.setAttribute('required', 'required');
+            } else {
+                camposExtras.classList.add('hidden');
+                inputData.removeAttribute('required');
+                inputObs.removeAttribute('required');
+                inputData.value = '';
+                inputObs.value = '';
+            }
+        }
+
+        window.onload = verificaStatus;
+    </script>
+
+</body>
+</html>

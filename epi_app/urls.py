@@ -16,4 +16,7 @@ urlpatterns = [
 
     path('emprestimos/', views.emprestimos, name='emprestimos'),
     path('inserir_emprestimo/', views.inserir_emprestimo, name='inserir_emprestimo'),
+    path('atualizar_emprestimo/<int:id>', views.atualizar_emprestimo, name='atualizar_emprestimo'),
+
+    path('controle/', views.controle, name='controle'),
 ]

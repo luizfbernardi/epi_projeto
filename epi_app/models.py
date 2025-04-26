@@ -16,11 +16,9 @@ class ColaboradorModel(models.Model):
 class EpiModel(models.Model):
     tipo = models.CharField(max_length=100, null=False)
     numero_epi = models.IntegerField(null=False)
-    status = models.CharField(max_length=30, null=False)
-    estado = models.CharField(max_length=30, null=False)
 
     def __str__(self):
-        return f"Epi({self.tipo}, {self.numero_epi}, {self.status}, {self.estado})"
+        return f"Epi({self.tipo}, {self.numero_epi})"
 
 class EmprestimoModel(models.Model):
 
@@ -32,8 +30,9 @@ class EmprestimoModel(models.Model):
     data_emprestimo = models.DateField(auto_now_add=True)
     data_prevista = models.DateField(blank=True)
     data_devolucao = models.DateField(null=True, blank=True)
+    status = models.CharField(null=False)
 
     observacao = models.TextField(blank=True)
 
     def __str__(self):
-        return f"Emprestimo({self.numero_emprestimo}, {self.colaborador}, {self.epi})"
+        return f"Emprestimo({self.numero_emprestimo}, {self.observacao}, {self.status}, {self.colaborador}, {self.data_devolucao}, {self.data_prevista}, {self.epi}, {self.data_emprestimo})"

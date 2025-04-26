@@ -3,6 +3,57 @@
 {% block title %} Colaborador {% endblock title %}
 
 {% block content %}
+<style>
+
+    form {
+        margin-left: 350px;
+        margin-top: 50px;
+        width: 500px;
+        background: #ECF0F1;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        font-family: Arial, sans-serif;
+    }
+
+    form input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    form button {
+        width: 100%;
+        padding: 12px;
+        background: #2C3E50;
+        color: #ECF0F1;
+        font-size: 18px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    form button:hover {
+        background: #34495E;
+    }
+
+    a {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        font-size: 16px;
+        color: #2C3E50;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+</style>
+
 <main>
     <h1>Atualizar Colaborador</h1>
     <form action="{% url 'atualizar_colaborador' colaborador.id %}" method="post">

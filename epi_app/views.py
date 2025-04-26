@@ -59,15 +59,13 @@ def inserir_epi(request):
         return render(request, 'pages/inserir_epi.html')
     
     tipo = request.POST.get('tipo')
-    numero_epi = request.POST.get('numero_epi')
-    status = request.POST.get('status')
-    estado = request.POST.get('estado')    
+    numero_epi = request.POST.get('numero_epi')    
 
     if not tipo and n_serie :
             messages.error(request, 'O campo tipo e número série são obrigatórios.')
             return redirect('inserir_epi')
     try:
-            epi = EpiModel.objects.create(tipo=tipo, numero_epi=numero_epi, status=status, estado=estado)
+            epi = EpiModel.objects.create(tipo=tipo, numero_epi=numero_epi)
             messages.success(request, 'Cadastro realizado com sucesso!')
     except Exception as e:
             messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
@@ -91,9 +89,7 @@ def atualizar_epi(request, id):
     
     tipo = request.POST.get('tipo')
     numero_epi = request.POST.get('numero_epi')
-    status = request.POST.get('status')
-    estado = request.POST.get('estado')
-    EpiModel.objects.filter(id=id).update(tipo=tipo, status=status, estado=estado)
+    EpiModel.objects.filter(id=id).update(tipo=tipo)
     return redirect('listar_epis')
 
 def emprestimos(request):  
@@ -116,6 +112,7 @@ def inserir_emprestimo(request):
     numero_epi = request.POST.get('numero_epi')
     data_prevista = request.POST.get('data_prevista')
     observacao = request.POST.get('observacao')
+    status = request.POST.get('status')
 
     if not numero_emprestimo or not numero_colaborador or not numero_epi:
         messages.error(request, 'Os campos de identificação são obrigatórios.')
@@ -131,13 +128,22 @@ def inserir_emprestimo(request):
         messages.error(request, 'EPI não encontrado.')
         return redirect('inserir_emprestimo')
 
+    if data_prevista:
+        data_prevista_obj = date.fromisoformat(data_prevista) 
+        data_atual = date.today()
+
+        if data_prevista_obj < data_atual:
+            messages.error(request, 'A data prevista para devolução não pode ser anterior à data atual.')
+            return redirect('inserir_emprestimo')
+
     try:
         EmprestimoModel.objects.create(
             numero_emprestimo=numero_emprestimo,
             colaborador=colaborador,
             epi=epi,
             data_prevista=data_prevista,
-            observacao=observacao
+            observacao=observacao,
+            status=status
         )
         messages.success(request, 'Cadastro realizado com sucesso!')
     except Exception as e:
@@ -145,6 +151,36 @@ def inserir_emprestimo(request):
 
     return redirect('inserir_emprestimo')
 
-
+def atualizar_emprestimo(request, id):
+    if request.method == 'GET':
+        emprestimo = EmprestimoModel.objects.get(id=id)
+        return render(request, 'pages/atualizar_emprestimo.html', context={'emprestimo': emprestimo})
     
+    data_devolucao = request.POST.get('data_devolucao')
+    observacao = request.POST.get('observacao')
+    data_prevista = request.POST.get('data_prevista')
+    status = request.POST.get('status')
+
+    if data_prevista:
+        data_prevista_obj = date.fromisoformat(data_prevista) 
+        data_atual = date.today()
+
+    if data_prevista_obj < data_atual:
+        messages.error(request, 'A data prevista para devolução não pode ser anterior à data atual.')
+
+    EmprestimoModel.objects.filter(id=id).update(data_prevista=data_prevista, data_devolucao=data_devolucao, observacao=observacao, status=status)
+    return redirect('inserir_emprestimo')
+    
+def controle(request):
+    numero_identificacao = request.GET.get('numero_identificacao', '')
+    
+    if numero_identificacao:
+        emprestimos = EmprestimoModel.objects.filter(
+            numero_emprestimo__icontains=numero_identificacao) | EmprestimoModel.objects.filter(
+            colaborador__numero_colaborador__icontains=numero_identificacao) | EmprestimoModel.objects.filter(
+            epi__numero_epi__icontains=numero_identificacao)
+    else:
+        emprestimos = EmprestimoModel.objects.all()
+    
+    return render(request, 'pages/controle.html', {'emprestimos': emprestimos})
     

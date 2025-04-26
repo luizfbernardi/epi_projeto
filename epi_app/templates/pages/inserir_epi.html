@@ -37,6 +37,16 @@
         display: block;
     }
 
+    select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border: 1px solid #BDC3C7;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
+
     input[type="text"], input[type="number"], input[type="date"] {
         width: 100%;
         padding: 10px;
@@ -118,13 +128,7 @@
 
         <label for="numero_epi">Número de Identificação:</label>
         <input type="text" id="numero_epi" name="numero_epi" required><br><br>
-
-        <label for="estado">Estado:</label>
-        <input type="text" id="estado" name="estado" required><br><br>
-
-        <label for="status">Status:</label>
-        <input type="text" id="status" name="status" required><br><br>
-
+        
         <button type="submit">Enviar</button>
     </form>
 

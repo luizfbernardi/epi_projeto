@@ -155,6 +155,13 @@
         <label for="observacao">Observação:</label>
         <input type="text" id="observacao" name="observacao" required>
 
+        <label for="status">Status:</label>
+        <select name="status" id="status" placeholder="Status" value="{{ emprestimo.status }}" required>
+            <option value="Emprestado">Emprestado</option>
+            <option value="Em uso" selected>Em uso</option>
+            <option value="Fornecido">Fornecido</option>
+        </select>
+
         <button type="submit">Salvar</button>
 
         <a href="{% url 'emprestimos' %}">Voltar para página de empréstimos</a>
