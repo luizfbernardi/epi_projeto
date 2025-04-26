@@ -13,5 +13,7 @@ urlpatterns = [
     path('listar_epis/', views.listar_epis, name='listar_epis'),
     path('atualizar_epi/<int:id>', views.atualizar_epi, name='atualizar_epi'),
     path('excluir_epi/<int:id>', views.excluir_epi, name='excluir_epi'),
+
+    path('emprestimos/', views.emprestimos, name='emprestimos'),
     path('inserir_emprestimo/', views.inserir_emprestimo, name='inserir_emprestimo'),
 ]

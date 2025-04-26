@@ -1,0 +1,44 @@
+{% extends 'global/index.html'%}
+
+{% block title %} Empréstimos {% endblock title %}
+
+{% block content %}
+<body>
+  <h1>Empréstimos</h1>
+
+  <table>
+    <tr>
+      <th>Id Emprestimo</th>
+      <th>Nome Colaborador</th>
+      <th>Número Colaborador</th>
+      <th>Tipo Epi</th>
+      <th>Número Epi</th>
+      <th>Data empréstimo</th>
+      <th>Data prevista</th>
+      <th>Data devolução</th>
+    </tr>
+    {% for emprestimo in emprestimos %}
+      <tr>
+        <td>{{ emprestimo.id }}</td>
+        <td>{{ emprestimo.numero_emprestimo }}</td>
+        <td>{{ emprestimo.colaborador.nome }}</td>
+        <td>{{ emprestimo.colaborador.numero_colaborador }}</td>
+        <td>{{ emprestimo.epi.tipo }}</td>
+        <td>{{ emprestimo.epi.numero_epi }}</td>
+        <td>{{ emprestimo.colaborador.nome }}</td>
+        <td>{{ emprestimo.colaborador.numero_colaborador }}</td>
+        <td>{{ emprestimo.data_emprestimo }}</td>
+        <td>{{ emprestimo.data_prevista }}</td>
+        <td>{{ emprestimo.devolucao }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="5">Nenhum produto encontrado.</td></tr>
+    {% endfor %}
+  </table>
+
+  <a href="{% url 'base' %}">Voltar para home</a>
+  <a href="{% url 'inserir_emprestimo' %}">Inserir um emprestimo</a>
+
+</body>
+
+{% endblock content%}

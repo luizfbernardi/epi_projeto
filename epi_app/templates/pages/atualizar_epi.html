@@ -8,7 +8,7 @@
     <form action="{% url 'atualizar_epi' epi.id %}" method="post">
         {% csrf_token %}
         <input type="text" name="tipo" placeholder="Tipo Epi" value="{{ epi.tipo }}">
-        <input type="text" name="n_serie" placeholder="Número de Série" value="{{ epi.n_serie }}">
+        <input type="text" name="numero_epi" placeholder="Número de Identificação" value="{{ epi.numero_epi }}" disabled>
         <input type="text" name="estado" placeholder="Estado de Uso" value="{{ epi.estado }}">
         <input type="text" name="status" placeholder="Status" value="{{ epi.status }}">
         <button type="submit">Atualizar</button>

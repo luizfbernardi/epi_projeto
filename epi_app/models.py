@@ -5,30 +5,35 @@ from django.db import models
 class ColaboradorModel(models.Model):
     cpf = models.CharField(max_length=14, null=False)
     nome = models.CharField(max_length=100, null=False)
+    numero_colaborador = models.IntegerField(null=False, default=0)
     setor = models.CharField(max_length=45, null=False)
     cargo = models.CharField(max_length=45)    
     telefone = models.CharField(max_length=14)
 
     def __str__(self):
-        return f"Colaborador({self.cpf}, {self.nome}, {self.setor}, {self.cargo})"
+        return f"Colaborador({self.cpf}, {self.nome}, {self.numero_colaborador}, {self.setor}, {self.cargo})"
 
 class EpiModel(models.Model):
-    #id_epi = models.IntegerField(primary_key=True)
     tipo = models.CharField(max_length=100, null=False)
-    n_serie = models.CharField(null=False)
+    numero_epi = models.IntegerField(null=False, default=0)
     status = models.CharField(max_length=30, null=False)
     estado = models.CharField(max_length=30, null=False)
 
     def __str__(self):
-        return f"Epi({self.id_epi}, {self.tipo}, {self.n_serie})"
+        return f"Epi({self.tipo}, {self.numero_epi}, {self.status}, {self.estado})"
 
 class EmprestimoModel(models.Model):
-    #id_emprestimo = models.IntegerField(primary_key=True)
-    data_emprestimo = models.DateField(auto_now_add=True)
-    data_retorno = models.DateField()
-    observacao = models.TextField()
+
+    numero_emprestimo = models.IntegerField(null=False, default=0)
+
     colaborador = models.ForeignKey(ColaboradorModel, on_delete=models.CASCADE)
     epi = models.ForeignKey(EpiModel, on_delete=models.CASCADE)
 
+    data_emprestimo = models.DateField(auto_now_add=True)
+    data_prevista = models.DateField(default=0)
+    data_devolucao = models.DateField(default=0)
+
+    observacao = models.TextField()
+
     def __str__(self):
-        return f"Emprestimo({self.id_emprestimo}, {self.colaborador}, {self.epi})"
+        return f"Emprestimo({self.numero_emprestimo}, {self.colaborador}, {self.epi})"

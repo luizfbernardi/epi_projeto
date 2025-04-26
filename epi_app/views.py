@@ -11,6 +11,7 @@ def inserir_colaborador(request):
     
     cpf = request.POST.get('cpf')
     nome = request.POST.get('nome')
+    numero_colaborador = request.POST.get('numero_colaborador')
     setor = request.POST.get('setor')
     cargo = request.POST.get('cargo')    
     telefone = request.POST.get('telefone')
@@ -19,7 +20,7 @@ def inserir_colaborador(request):
             messages.error(request, 'O campo nome e cpf são obrigatórios.')
             return redirect('inserir_colaborador')
     try:
-            colaborador = ColaboradorModel.objects.create(cpf=cpf, nome=nome, setor=setor, cargo=cargo, telefone=telefone)
+            colaborador = ColaboradorModel.objects.create(cpf=cpf, nome=nome, setor=setor, numero_colaborador=numero_colaborador, cargo=cargo, telefone=telefone)
             messages.success(request, 'Cadastro realizado com sucesso!')
     except Exception as e:
             messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
@@ -46,9 +47,10 @@ def atualizar_colaborador(request, id):
     nome = request.POST.get('nome')
     setor = request.POST.get('setor')
     cargo = request.POST.get('cargo')
+    numero_colaborador = request.POST.get('numero_colaborador')
     cpf = request.POST.get('cpf')
     telefone = request.POST.get('telefone')
-    ColaboradorModel.objects.filter(cpf=cpf).update(nome=nome, setor=setor, cargo=cargo, cpf=cpf, telefone=telefone)
+    colaborador= ColaboradorModel.objects.filter(id=id).update(nome=nome, setor=setor, cargo=cargo, telefone=telefone)
     return redirect('listar_colaboradores')
 
 def inserir_epi(request):
@@ -56,7 +58,7 @@ def inserir_epi(request):
         return render(request, 'pages/inserir_epi.html')
     
     tipo = request.POST.get('tipo')
-    n_serie = request.POST.get('n_serie')
+    numero_epi = request.POST.get('numero_epi')
     status = request.POST.get('status')
     estado = request.POST.get('estado')    
 
@@ -64,7 +66,7 @@ def inserir_epi(request):
             messages.error(request, 'O campo tipo e número série são obrigatórios.')
             return redirect('inserir_epi')
     try:
-            epi = EpiModel.objects.create(tipo=tipo, n_serie=n_serie, status=status, estado=estado)
+            epi = EpiModel.objects.create(tipo=tipo, numero_epi=numero_epi, status=status, estado=estado)
             messages.success(request, 'Cadastro realizado com sucesso!')
     except Exception as e:
             messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
@@ -87,19 +89,45 @@ def atualizar_epi(request, id):
         return render(request, 'pages/atualizar_epi.html', context={'epi': epi})
     
     tipo = request.POST.get('tipo')
-    n_serie = request.POST.get('n_serie')
+    numero_epi = request.POST.get('numero_epi')
     status = request.POST.get('status')
     estado = request.POST.get('estado')
-    EpiModel.objects.filter(id=id).update(tipo=tipo, n_serie=n_serie, status=status, estado=estado)
+    EpiModel.objects.filter(id=id).update(tipo=tipo, status=status, estado=estado)
     return redirect('listar_epis')
+
+def emprestimos(request):  
+    emprestimo = EmprestimoModel.objects.select_related('colaborador', 'epi').all()
+    return render(request, 'pages/emprestimos.html', context={'emprestimos': emprestimo})
 
 def inserir_emprestimo(request):
     if request.method == 'GET':
         return render(request, 'pages/inserir_emprestimo.html')
     
-    cpf = request.POST.get('cpf')
-    n_serie = request.POST.get('n_serie')
+    numero_emprestimo = request.POST.get('numero_emprestimo')
+    numero_colaborador = request.POST.get('numero_colaborador')
+    numero_epi = request.POST.get('numero_epi')
+    data_emprestimo = request.POST.get('data_emprestimo')
+    data_prevista = request.POST.get('data_prevista')
+    data_devolucao = request.POST.get('data_devolucao')
+    observacao = request.POST.get('observacao')
+    
+
+    colaborador = ColaboradorModel.objects.get(id=numero_colaborador)
+    epi= EpiModel.objects.get(id=numero_epi)
+
+    if not numero_emprestimo and colaborador and epi :
+            messages.error(request, 'Os campos de identificação são obrigatórios.')
+            return redirect('inserir_emprestimo')
+    try:
+            EmprestimoModel.objects.create(numero_emprestimo=numero_emprestimo, colaborador=colaborador, epi=epi, data_emprestimo=data_emprestimo, data_prevista=data_prevista, data_devolucao=data_devolucao, observacao=observacao)
+            messages.success(request, 'Cadastro realizado com sucesso!')
+    except Exception as e:
+            messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
+
+    colaboradores = ColaboradorModel.objects.all()
+    epis = EpiModel.objects.all()
+    return render(request, 'pages/inserir_emprestimo.html', {'colaboradores': colaboradores}, {'epis': epis})
+
 
     
-    emprestimo = ColaboradorModel.objects.create(cpf=cpf, n_serie=n_serie, )
-    return render(request, 'pages/inserir_emprestimo.html', context={'emprestimo': emprestimo})
+    

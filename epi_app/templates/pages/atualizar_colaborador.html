@@ -8,7 +8,8 @@
     <form action="{% url 'atualizar_colaborador' colaborador.id %}" method="post">
         {% csrf_token %}
         <input type="text" name="nome" placeholder="Nome" value="{{ colaborador.nome }}">
-        <input type="text" name="cpf" placeholder="Cpf" value="{{ colaborador.cpf }}">
+        <input type="text" name="cpf" placeholder="Cpf" value="{{ colaborador.cpf }}" disabled>
+        <input type="text" name="numero_colaborador" placeholder="Numero de Identificação" value="{{ colaborador.numero_colaborador }}" disabled>
         <input type="text" name="setor" placeholder="Setor" value="{{ colaborador.setor }}">
         <input type="text" name="cargo" placeholder="Cargo" value="{{ colaborador.cargo }}">
         <input type="text" name="telefone" placeholder="Telefone" value="{{ colaborador.telefone }}">
