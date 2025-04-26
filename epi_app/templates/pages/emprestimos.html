@@ -1,14 +1,87 @@
-{% extends 'global/index.html'%}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Usuário</title>
+  <style>
 
-{% block title %} Empréstimos {% endblock title %}
+    h1{
+      font-family: Arial, sans-serif;
+    }
 
-{% block content %}
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    background-color: #34495E;
+    color: #ECF0F1;
+    border-radius: 8px;
+    overflow: hidden;
+    }
+
+    th {
+        background-color: #2C3E50; 
+        color: #ECF0F1;
+        padding: 12px 15px;
+        text-align: left;
+        font-size: 18px;
+    }
+
+    td {
+        padding: 10px 15px;
+        text-align: left;
+        border: 1px solid #BDC3C7;
+        font-size: 16px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #1C2833; 
+    }
+
+    tr:hover {
+        background-color: #34495E;
+    }
+
+    tr td[colspan="7"] {
+        text-align: center;
+        font-style: italic;
+        color: #BDC3C7;
+    }
+
+    a {
+        text-decoration: none;
+        color: #2980B9;
+        padding: 8px 12px;
+        margin-top: 20px;
+        display: inline-block;
+        border: 1px solid #2980B9;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        font-family: Arial, sans-serif;
+    }
+
+    a:hover {
+        background-color: #2980B9;
+        color: white;
+    }
+
+    tr td[colspan="8"] {
+        background-color: #34495E;
+        color: #BDC3C7;
+    }
+
+  </style>
+</head>
+
 <body>
   <h1>Empréstimos</h1>
-
+  
   <table>
     <tr>
-      <th>Número Empréstimo </th>
+      =<th>Número Empréstimo </th>
       <th>Nome Colaborador </th>
       <th>Número Colaborador </th>
       <th>Tipo Epi </th>
@@ -23,8 +96,6 @@
         <td>{{ emprestimo.colaborador.numero_colaborador }}</td>
         <td>{{ emprestimo.epi.tipo }}</td>
         <td>{{ emprestimo.epi.numero_epi }}</td>
-        <td>{{ emprestimo.colaborador.nome }}</td>
-        <td>{{ emprestimo.colaborador.numero_colaborador }}</td>
         <td>{{ emprestimo.data_emprestimo }}</td>
         <td>{{ emprestimo.data_prevista }}</td>
       </tr>
@@ -32,10 +103,9 @@
       <tr><td colspan="5">Nenhum produto encontrado.</td></tr>
     {% endfor %}
   </table>
-
-  <a href="{% url 'base' %}">Voltar para home</a>
-  <a href="{% url 'inserir_emprestimo' %}">Inserir um emprestimo</a>
-
+  
+  <a href="{% url 'base' %}">Voltar para Home</a>
+  <a href="{% url 'inserir_emprestimo' %}">Inserir um empréstimo</a>
+  
 </body>
-
-{% endblock content%}
+</html>
