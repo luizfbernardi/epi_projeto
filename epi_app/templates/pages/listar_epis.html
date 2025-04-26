@@ -1,20 +1,101 @@
 {% extends 'global/index.html'%}
 
-{% block title %} EPI {% endblock title %}
+{% block title %} EPIs {% endblock title %}
 
 {% block content %}
-<body>
-    <h1>EPIS Cadastrados</h1>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f8;
+    }
+
+    .container {
+        margin-left: 320px; /* espaço para o menu lateral */
+        padding: 30px;
+        max-width: 700px;
+        margin-top: 40px;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 28px;
+        color: #2C3E50;
+        margin-bottom: 30px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        background: #ECF0F1;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        margin-top: 20px;
+    }
+
+    ul li {
+        background: #ffffff;
+        padding: 15px 20px;
+        margin: 10px;
+        border-radius: 8px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    li a {
+        margin-left: 15px;
+        text-decoration: none;
+        font-weight: bold;
+        color: #2980B9;
+        font-size: 14px;
+        transition: color 0.3s;
+    }
+
+    li a:hover {
+        color: #1F618D;
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    a.voltar-home {
+        display: block;
+        text-align: center;
+        margin-top: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #2C3E50;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    a.voltar-home:hover {
+        color: #2980B9;
+    }
+</style>
+
+<div class="container">
+    <h1>EPIs Cadastrados</h1>
     <ul>
         {% for epi in epis %}
-            <li>{{ epi.tipo }} - {{ epi.numero_epi }} - {{ epi.estado }} - {{ epi.status }}
-                <a href="{% url 'atualizar_epi' epi.id %}">Editar</a> |
-                <a href="{% url 'excluir_epi' epi.id %}">Deletar</a>
+            <li>
+                <div>
+                    {{ epi.tipo }} - {{ epi.numero_epi }} - {{ epi.estado }} - {{ epi.status }}
+                </div>
+                <div class="actions">
+                    <a href="{% url 'atualizar_epi' epi.id %}">Editar</a> |
+                    <a href="{% url 'excluir_epi' epi.id %}">Deletar</a>
+                </div>
             </li>
         {% empty %}
-            <li>Nenhum Epi cadastrado.</li>
+            <li>Nenhum EPI cadastrado.</li>
         {% endfor %}
     </ul>
-    <a href="{% url 'base' %}">Voltar para home</a>
-</body>
-{% endblock content%}
+    <a href="{% url 'base' %}" class="voltar-home">Voltar para home</a>
+</div>
+
+{% endblock content %}
