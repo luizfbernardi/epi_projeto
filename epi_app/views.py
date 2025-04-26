@@ -101,7 +101,9 @@ def emprestimos(request):
 
 def inserir_emprestimo(request):
     if request.method == 'GET':
-        return render(request, 'pages/inserir_emprestimo.html')
+        colaboradores = ColaboradorModel.objects.all()
+        epis = EpiModel.objects.all()
+        return render(request, 'pages/inserir_emprestimo.html', {'colaboradores': colaboradores, 'epis': epis})
     
     numero_emprestimo = request.POST.get('numero_emprestimo')
     numero_colaborador = request.POST.get('numero_colaborador')
@@ -115,18 +117,35 @@ def inserir_emprestimo(request):
     colaborador = ColaboradorModel.objects.get(id=numero_colaborador)
     epi= EpiModel.objects.get(id=numero_epi)
 
-    if not numero_emprestimo and colaborador and epi :
-            messages.error(request, 'Os campos de identificação são obrigatórios.')
-            return redirect('inserir_emprestimo')
+    if not numero_emprestimo or not numero_colaborador or not numero_epi:
+        messages.error(request, 'Os campos de identificação são obrigatórios.')
+        return redirect('inserir_emprestimo')
     try:
-            EmprestimoModel.objects.create(numero_emprestimo=numero_emprestimo, colaborador=colaborador, epi=epi, data_emprestimo=data_emprestimo, data_prevista=data_prevista, data_devolucao=data_devolucao, observacao=observacao)
-            messages.success(request, 'Cadastro realizado com sucesso!')
-    except Exception as e:
-            messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
+        colaborador = ColaboradorModel.objects.get(id=numero_colaborador)
+        epi = EpiModel.objects.get(id=numero_epi)
+    except ColaboradorModel.DoesNotExist:
+        messages.error(request, 'Colaborador não encontrado.')
+        return redirect('inserir_emprestimo')
+    except EpiModel.DoesNotExist:
+        messages.error(request, 'EPI não encontrado.')
+        return redirect('inserir_emprestimo')
 
-    colaboradores = ColaboradorModel.objects.all()
-    epis = EpiModel.objects.all()
-    return render(request, 'pages/inserir_emprestimo.html', {'colaboradores': colaboradores}, {'epis': epis})
+    
+    try:
+        EmprestimoModel.objects.create(
+            numero_emprestimo=numero_emprestimo,
+            colaborador=colaborador,
+            epi=epi,
+            data_emprestimo=data_emprestimo,
+            data_prevista=data_prevista,
+            data_devolucao=data_devolucao,
+            observacao=observacao
+        )
+        messages.success(request, 'Cadastro realizado com sucesso!')
+    except Exception as e:
+        messages.error(request, f'Ocorreu um erro ao cadastrar: {str(e)}')
+
+    return redirect('inserir_emprestimo')
 
 
     

@@ -10,18 +10,40 @@
         <input type="number" id="numero_emprestimo" name="numero_emprestimo" required><br><br>
 
         <label for="numero_colaborador">Número de Identificação Colaborador:</label>
-        <select name="numero_colaborador">
+        <select name="numero_colaborador" id="numero_colaborador" onchange="mostrarNomeColaborador()" required>
+            <option value="">Selecione</option>
             {% for colaborador in colaboradores %}
-                <option value="{{ colaboradores.id }}">{{ colaboradores.nome }}</option>
+                <option value="{{ colaborador.id }}" data-nome="{{ colaborador.nome }}">
+                    {{ colaborador.numero_colaborador }}
+                </option>
             {% endfor %}
-        </select required><br><br>
+        </select>
+        <p id="nome_colaborador"></p>
 
         <label for="numero_epi">Número de Identificação Epi:</label>
-        <select name="numero_epi">
+        <select name="numero_epi" id="numero_epi" onchange="mostrarTipoEpi()" required>
+            <option value="">Selecione</option>
             {% for epi in epis %}
-                <option value="{{ epis.id }}">{{ epis.tipo }}</option>
+                <option value="{{ epi.id }}" data-tipo="{{ epi.tipo }}">
+                    {{ epi.numero_epi }}
+                </option>
             {% endfor %}
-        </select required><br><br>
+        </select>
+        <p id="tipo_epi"></p>
+
+        <script>
+            function mostrarNomeColaborador() {
+                const select = document.getElementById('numero_colaborador');
+                const nome = select.options[select.selectedIndex].getAttribute('data-nome');
+                document.getElementById('nome_colaborador').textContent = nome ? "Nome: " + nome : "";
+            }
+
+            function mostrarTipoEpi() {
+                const select = document.getElementById('numero_epi');
+                const tipo = select.options[select.selectedIndex].getAttribute('data-tipo');
+                document.getElementById('tipo_epi').textContent = tipo ? "Tipo: " + tipo : "";
+            }
+        </script>
 
         <label for="data_emprestimo">Data do Empréstimo</label>
         <input type="date" id="data_emprestimo" name="data_emprestimo" required, disabled><br><br>
