@@ -5,7 +5,7 @@ from django.db import models
 class ColaboradorModel(models.Model):
     cpf = models.CharField(max_length=14, null=False)
     nome = models.CharField(max_length=100, null=False)
-    numero_colaborador = models.IntegerField(null=False, default=0)
+    numero_colaborador = models.IntegerField(null=False)
     setor = models.CharField(max_length=45, null=False)
     cargo = models.CharField(max_length=45)    
     telefone = models.CharField(max_length=14)
@@ -15,7 +15,7 @@ class ColaboradorModel(models.Model):
 
 class EpiModel(models.Model):
     tipo = models.CharField(max_length=100, null=False)
-    numero_epi = models.IntegerField(null=False, default=0)
+    numero_epi = models.IntegerField(null=False)
     status = models.CharField(max_length=30, null=False)
     estado = models.CharField(max_length=30, null=False)
 
@@ -24,7 +24,7 @@ class EpiModel(models.Model):
 
 class EmprestimoModel(models.Model):
 
-    numero_emprestimo = models.IntegerField(null=False, default=0)
+    numero_emprestimo = models.IntegerField(null=False)
 
     colaborador = models.ForeignKey(ColaboradorModel, on_delete=models.CASCADE)
     epi = models.ForeignKey(EpiModel, on_delete=models.CASCADE)
