@@ -8,18 +8,16 @@
 
   <table>
     <tr>
-      <th>Id Emprestimo</th>
-      <th>Nome Colaborador</th>
-      <th>Número Colaborador</th>
-      <th>Tipo Epi</th>
-      <th>Número Epi</th>
-      <th>Data empréstimo</th>
-      <th>Data prevista</th>
-      <th>Data devolução</th>
+      <th>Número Empréstimo </th>
+      <th>Nome Colaborador </th>
+      <th>Número Colaborador </th>
+      <th>Tipo Epi </th>
+      <th>Número Epi </th>
+      <th>Data empréstimo </th>
+      <th>Data prevista </th>
     </tr>
     {% for emprestimo in emprestimos %}
       <tr>
-        <td>{{ emprestimo.id }}</td>
         <td>{{ emprestimo.numero_emprestimo }}</td>
         <td>{{ emprestimo.colaborador.nome }}</td>
         <td>{{ emprestimo.colaborador.numero_colaborador }}</td>
@@ -29,7 +27,6 @@
         <td>{{ emprestimo.colaborador.numero_colaborador }}</td>
         <td>{{ emprestimo.data_emprestimo }}</td>
         <td>{{ emprestimo.data_prevista }}</td>
-        <td>{{ emprestimo.devolucao }}</td>
       </tr>
     {% empty %}
       <tr><td colspan="5">Nenhum produto encontrado.</td></tr>

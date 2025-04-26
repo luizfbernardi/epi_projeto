@@ -4,9 +4,20 @@
 
 {% block content %} 
 <body>
+    <h1>Inserir Empréstimo</h1>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
     <form action="{% url 'inserir_emprestimo' %}" method="POST">
         {% csrf_token %}
-        <label for="numero_emprestimo">Número de Identificação Empréstimo</label>
+
+        <label for="numero_emprestimo">Número de Identificação Empréstimo:</label>
         <input type="number" id="numero_emprestimo" name="numero_emprestimo" required><br><br>
 
         <label for="numero_colaborador">Número de Identificação Colaborador:</label>
@@ -31,33 +42,32 @@
         </select>
         <p id="tipo_epi"></p>
 
-        <script>
-            function mostrarNomeColaborador() {
-                const select = document.getElementById('numero_colaborador');
-                const nome = select.options[select.selectedIndex].getAttribute('data-nome');
-                document.getElementById('nome_colaborador').textContent = nome ? "Nome: " + nome : "";
-            }
+        <label>Data do Empréstimo (automática):</label>
+        <input type="text" value="{{ today|date:'Y-m-d' }}" readonly><br><br>
 
-            function mostrarTipoEpi() {
-                const select = document.getElementById('numero_epi');
-                const tipo = select.options[select.selectedIndex].getAttribute('data-tipo');
-                document.getElementById('tipo_epi').textContent = tipo ? "Tipo: " + tipo : "";
-            }
-        </script>
-
-        <label for="data_emprestimo">Data do Empréstimo</label>
-        <input type="date" id="data_emprestimo" name="data_emprestimo" required, disabled><br><br>
-
-        <label for="data_prevista">Data Prevista para Devolução</label>
+        <label for="data_prevista">Data Prevista para Devolução:</label>
         <input type="date" id="data_prevista" name="data_prevista" required><br><br>
 
-        <label for="data_devolucao">Data da Devolução</label>
-        <input type="date" id="data_devolucao" name="data_devolucao" required><br><br>
-
-        <label for="observacao">Observação</label>
+        <label for="observacao">Observação:</label>
         <input type="text" id="observacao" name="observacao" required><br><br>
 
         <button type="submit">Salvar</button>
+
+        <a href="{% url 'emprestimos' %}">Voltar para página de empréstimos</a>
     </form>
+
+    <script>
+        function mostrarNomeColaborador() {
+            const select = document.getElementById('numero_colaborador');
+            const nome = select.options[select.selectedIndex].getAttribute('data-nome');
+            document.getElementById('nome_colaborador').textContent = nome ? "Nome: " + nome : "";
+        }
+
+        function mostrarTipoEpi() {
+            const select = document.getElementById('numero_epi');
+            const tipo = select.options[select.selectedIndex].getAttribute('data-tipo');
+            document.getElementById('tipo_epi').textContent = tipo ? "Tipo: " + tipo : "";
+        }
+    </script>
 </body>
 {% endblock content %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from epi_app.models import *
+from datetime import date
 
 def base(request):
     return render(request, 'base.html')
@@ -103,23 +104,23 @@ def inserir_emprestimo(request):
     if request.method == 'GET':
         colaboradores = ColaboradorModel.objects.all()
         epis = EpiModel.objects.all()
-        return render(request, 'pages/inserir_emprestimo.html', {'colaboradores': colaboradores, 'epis': epis})
-    
+
+        return render(request, 'pages/inserir_emprestimo.html', {
+            'colaboradores': colaboradores,
+            'epis': epis,
+            'today': date.today()
+        })
+
     numero_emprestimo = request.POST.get('numero_emprestimo')
     numero_colaborador = request.POST.get('numero_colaborador')
     numero_epi = request.POST.get('numero_epi')
-    data_emprestimo = request.POST.get('data_emprestimo')
     data_prevista = request.POST.get('data_prevista')
-    data_devolucao = request.POST.get('data_devolucao')
     observacao = request.POST.get('observacao')
-    
-
-    colaborador = ColaboradorModel.objects.get(id=numero_colaborador)
-    epi= EpiModel.objects.get(id=numero_epi)
 
     if not numero_emprestimo or not numero_colaborador or not numero_epi:
         messages.error(request, 'Os campos de identificação são obrigatórios.')
         return redirect('inserir_emprestimo')
+
     try:
         colaborador = ColaboradorModel.objects.get(id=numero_colaborador)
         epi = EpiModel.objects.get(id=numero_epi)
@@ -130,15 +131,12 @@ def inserir_emprestimo(request):
         messages.error(request, 'EPI não encontrado.')
         return redirect('inserir_emprestimo')
 
-    
     try:
         EmprestimoModel.objects.create(
             numero_emprestimo=numero_emprestimo,
             colaborador=colaborador,
             epi=epi,
-            data_emprestimo=data_emprestimo,
             data_prevista=data_prevista,
-            data_devolucao=data_devolucao,
             observacao=observacao
         )
         messages.success(request, 'Cadastro realizado com sucesso!')

@@ -30,10 +30,10 @@ class EmprestimoModel(models.Model):
     epi = models.ForeignKey(EpiModel, on_delete=models.CASCADE)
 
     data_emprestimo = models.DateField(auto_now_add=True)
-    data_prevista = models.DateField(default=0)
-    data_devolucao = models.DateField(default=0)
+    data_prevista = models.DateField(blank=True)
+    data_devolucao = models.DateField(null=True, blank=True)
 
-    observacao = models.TextField()
+    observacao = models.TextField(blank=True)
 
     def __str__(self):
         return f"Emprestimo({self.numero_emprestimo}, {self.colaborador}, {self.epi})"
